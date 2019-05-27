@@ -37,7 +37,9 @@ namespace ex3.Controllers
         [HttpPost]
         public string GetPoint()
         {
-            //client.start();
+       
+            this.client.start();
+            
             //Data d = Data.getInstance();
             Data data = Data.getInstance();
 
@@ -50,7 +52,7 @@ namespace ex3.Controllers
         {
             this.client = new ClientConnect();
             client.connect(ip, port);
-            //client.start();
+            client.start();
 
             Data d = Data.getInstance();
             Session["lat"] = d.M_lat;

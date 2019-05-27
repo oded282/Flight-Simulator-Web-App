@@ -38,7 +38,7 @@ namespace ex3.Models
             client = null;
         }
 
-        public string read()
+        public string read(NetworkStream nwStream)
         {
             if (client == null)
             {
@@ -46,35 +46,36 @@ namespace ex3.Models
                 return null;
             }
 
-            NetworkStream nwStream = client.GetStream();
-            BinaryReader reader = new BinaryReader(nwStream);
+            //NetworkStream nwStream = client.GetStream();
 
-            return reader.ReadString();
+            byte[] byteToSend = new byte[512] ;
+            nwStream.Read(byteToSend, 0, byteToSend.Length);
 
+            return byteToSend.ToString();
         }
 
-        public void write(string command)
+        public void write(string command , NetworkStream nwStream)
         {
             if (client == null)
             {
                 Console.WriteLine("Client not connected - can't write");
                 return;
             }
-            NetworkStream nwStream = client.GetStream();
-            BinaryWriter writer = new BinaryWriter(nwStream);
-
-            writer.Write(command);
+            //NetworkStream nwStream = client.GetStream();
+            byte[] byteToSend = ASCIIEncoding.ASCII.GetBytes(command);
+            nwStream.Write(byteToSend, 0, byteToSend.Length);
             
         }
 
         public void start()
         {
             Data d = Data.getInstance();
-            
-            write("get /position/latitude-deg\r\n");
-            d.M_lat = read();
-            write("get /position/longitude-deg\r\n");
-            d.M_lon = read();
+            NetworkStream nwStream = client.GetStream();
+
+            write("get /position/latitude-deg\r\n" , nwStream);
+            d.M_lat = read(nwStream);
+            write("get /position/longitude-deg\r\n",nwStream);
+            d.M_lon = read(nwStream);
 
         }
 
