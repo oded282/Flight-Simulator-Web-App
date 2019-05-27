@@ -45,7 +45,6 @@ namespace ex3.Models
             if (instance == null)
             {
                 instance = new Data();
-                return instance;
             }
             return instance;
         }
