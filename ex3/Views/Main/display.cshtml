@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "display";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <style>
+        body {
+            background-image: url("export-map-share.png");
+            background-size: cover;
+            background-attachment: fixed;
+        }
+    </style>
+
+</head>
+<body>
+    <div>
+        <svg>
+            <circle id="location" type="" cx=@Model.Lat cy=@Model.Lon class="plane" r="10" stroke="blue" stroke-width="3" fill="red" />
+        </svg>
+    </div>
+</body>
+</html>
