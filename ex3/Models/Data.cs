@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Xml;
 
 namespace ex3.Models
 {
@@ -47,6 +48,14 @@ namespace ex3.Models
                 return instance;
             }
             return instance;
+        }
+
+        public void ToXml(XmlWriter writer)
+        {
+            writer.WriteStartElement("Data");
+            writer.WriteElementString("lat", this.M_lat);
+            writer.WriteElementString("lon", this.M_lon);
+            writer.WriteEndElement();
         }
 
     }

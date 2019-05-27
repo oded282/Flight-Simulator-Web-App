@@ -7,21 +7,43 @@
 
 <html>
 <head>
+    <link rel="stylesheet" type="text/css" href="Content/Style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width" />
-    <style>
-        body {
-            background-image: url("export-map-share.png");
-            background-size: cover;
-            background-attachment: fixed;
-        }
-    </style>
+
 
 </head>
 <body>
-    <div>
-        <svg>
-            <circle id="location" type="" cx=@Model.Lat cy=@Model.Lon class="plane" r="10" stroke="blue" stroke-width="3" fill="red" />
-        </svg>
-    </div>
+    <svg>
+        <circle id="location" class="plane" r="10" stroke="white" stroke-width="3" fill="yellow" />
+    </svg>
+
+    <script>
+
+
+//        var lat = @Session["lat"];
+//        var lon = @Session["lon"];
+//        alert(lat);
+//        document.getElementById("location").style.cx = lat;
+//        document.getElementById("location").style.cy = lon;
+
+        myTimer = (function () {
+            document.getElementById("location").setAttribute("stroke", "blue");
+
+            $.post("@Url.Action("GetPoint", "Main")").done(function (xml) {
+                alert(xml);
+                var xmlDoc = $.parseXML(xml);
+                    $xml = $(xmlDoc);
+                document.getElementById("location").style.cx = $xml.find("lat").text();
+                document.getElementById("location").style.cy = $xml.find("lon").text();
+
+            });
+        });
+        setInterval(myTimer, 250);
+
+
+
+    </script>
+
 </body>
 </html>

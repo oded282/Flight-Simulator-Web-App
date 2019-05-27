@@ -105,7 +105,8 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="export-map-share.png" />
+    <Content Include="Content\background.png" />
+    <Content Include="Content\Style.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
@@ -123,6 +124,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ClientConnect.cs" />
     <Compile Include="Models\Data.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
