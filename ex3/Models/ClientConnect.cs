@@ -8,9 +8,21 @@ using System.Web;
 
 namespace ex3.Models
 {
+    #region Singleton
     public class ClientConnect
     {
+       
         TcpClient client;
+        public static ClientConnect instance = null;
+
+        private ClientConnect() {}
+
+        public static ClientConnect getInstance() {
+            if (instance == null) {
+                instance = new ClientConnect();
+            }
+            return instance;
+        }
 
         public void connect(string ip , int port)
         {
@@ -51,7 +63,7 @@ namespace ex3.Models
             byte[] byteToSend = new byte[512] ;
             nwStream.Read(byteToSend, 0, byteToSend.Length);
 
-            return byteToSend.ToString();
+            return Encoding.UTF8.GetString(byteToSend, 0, byteToSend.Length);
         }
 
         public void write(string command , NetworkStream nwStream)
@@ -67,18 +79,26 @@ namespace ex3.Models
             
         }
 
+        public string ParseValue(string data) {
+            int startindex = data.IndexOf((char)39);
+            int Endindex = data.LastIndexOf((char)39);
+            string outputstring = data.Substring(startindex + 1, Endindex - startindex - 1);
+            return outputstring;
+        }
+
         public void start()
         {
             Data d = Data.getInstance();
             NetworkStream nwStream = client.GetStream();
 
             write("get /position/latitude-deg\r\n" , nwStream);
-            d.M_lat = read(nwStream);
+            d.M_lat = ParseValue(read(nwStream));
             write("get /position/longitude-deg\r\n",nwStream);
-            d.M_lon = read(nwStream);
+            d.M_lon = ParseValue(read(nwStream));
 
         }
 
 
     }
+    #endregion
 }
