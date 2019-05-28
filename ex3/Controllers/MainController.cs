@@ -16,7 +16,12 @@ namespace ex3.Controllers
 {
     public class MainController : Controller
     {
+
         ClientConnect client;
+
+        public MainController (){
+            client = ClientConnect.getInstance();
+        }
 
         private string ToXml(Data data)
         {
@@ -37,7 +42,9 @@ namespace ex3.Controllers
         [HttpPost]
         public string GetPoint()
         {
-            //client.start();
+       
+            this.client.start();
+            
             //Data d = Data.getInstance();
             Data data = Data.getInstance();
 
@@ -48,9 +55,7 @@ namespace ex3.Controllers
         [HttpGet]
         public ActionResult display(string ip , int port)
         {
-            this.client = new ClientConnect();
-            client.connect(ip, port);
-            //client.start();
+            this.client.connect(ip, port);
 
             Data d = Data.getInstance();
             Session["lat"] = d.M_lat;
@@ -61,7 +66,7 @@ namespace ex3.Controllers
 
         public ActionResult display(string ip, int port, int rate)
         {
-            this.client = new ClientConnect();
+           
             client.connect(ip, port);
             //client.start();
 
