@@ -4,18 +4,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="Content/Style.css">
+
+    <link rel="style" type="text/css" href="Content/Style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width" />
-
 </head>
-<body>
-    <svg>
-        <rect fill="lime" width="100%" height="100%" />
-        <circle id="location" class="plane" r="10" stroke="white" stroke-width="3" fill="yellow" />
-    </svg>
-    <script>
+<body background="~/Content/background.png" style="background-size:cover;background-attachment:fixed" >
 
+    
+        <canvas id="myCanvas"> </canvas>
+                       
+       
+            
+<script>
 
 //        var lat = @Session["lat"];
 //        var lon = @Session["lon"];
@@ -23,24 +24,39 @@
 //        document.getElementById("location").style.cx = lat;
 //        document.getElementById("location").style.cy = lon;
 
-        myTimer = (function () {
-            document.getElementById("location").setAttribute("stroke", "blue");
+    var ctx = document.getElementById("myCanvas").getContext('2d');
+    ctx.canvas.width = window.innerWidth;
+    ctx.canvas.height = window.innerHeight;
+
+        myTimer = (function (ctx) {
 
             $.post("@Url.Action("GetPoint", "Main")").done(function (xml) {
-                alert(xml);
+                //alert(xml);
                 var xmlDoc = $.parseXML(xml);
-                    $xml = $(xmlDoc);
-                //document.getElementById("location").style.cx = $xml.find("lat").text();
-                //document.getElementById("location").style.cy = $xml.find("lon").text();
-                document.getElementById("location").style.cx = "270";
-                document.getElementById("location").style.cy = "300";
+                $xml = $(xmlDoc);
+                var lat = (parseFloat($xml.find("lat").text()) + 90) * (screen.height / 180);
+                var lon = (parseFloat($xml.find("lon").text()) + 180) * (screen.height / 360);
+                alert(lat);
+                alert(lon);
+                
+                ctx.beginPath();
+                ctx.arc(lat, lon, 8, 0, Math.PI * 2);
+                ctx.fillStyle = "red";
+                ctx.strokeStyle = "black";
+                ctx.lineWidth = 3;
+                ctx.fill();
+                ctx.stroke();
+                ctx.closePath();
+                //document.getElementById("location").style.cx = (parseInt($xml.find("lat").text()) + 90) * (screen.height / 180);
+                //document.getElementById("location").style.cy = (parseInt($xml.find("lon").text()) + 180) * (screen.height / 360);
+             
 
             });
         });
-        setInterval(myTimer, 1000);
+    setInterval(function () { myTimer(ctx); }, 1000);
 
 
 
-    </script>
+</script>
 </body>
 </html>

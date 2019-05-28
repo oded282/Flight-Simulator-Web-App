@@ -1,20 +1,12 @@
-﻿body {
-    background-image: url("/../../Content/background.png");
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-}
-
-html, body {
+﻿html, body {
     width: 100%;
     height: 100%;
     margin: 0;
 }
-
-svg {
-    position: absolute;
+canvas {
+    position: fixed;
     left: 0;
     top: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
 }

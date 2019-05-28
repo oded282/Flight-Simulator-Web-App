@@ -42,7 +42,10 @@ namespace ex3.Controllers
         [HttpPost]
         public string GetPoint()
         {
-       
+            if (this.client == null)
+            {
+                return null;
+            }
             this.client.start();
             
             //Data d = Data.getInstance();

@@ -79,7 +79,7 @@ namespace ex3.Models
             
         }
 
-        public string ParseValue(string data) {
+        public string parseValue(string data) {
             int startindex = data.IndexOf((char)39);
             int Endindex = data.LastIndexOf((char)39);
             string outputstring = data.Substring(startindex + 1, Endindex - startindex - 1);
@@ -92,9 +92,9 @@ namespace ex3.Models
             NetworkStream nwStream = client.GetStream();
 
             write("get /position/latitude-deg\r\n" , nwStream);
-            d.M_lat = ParseValue(read(nwStream));
+            d.M_lat = parseValue(read(nwStream));
             write("get /position/longitude-deg\r\n",nwStream);
-            d.M_lon = ParseValue(read(nwStream));
+            d.M_lon = parseValue(read(nwStream));
 
 
         }
