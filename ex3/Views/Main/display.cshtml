@@ -1,23 +1,19 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "display";
 }
-
 <!DOCTYPE html>
-
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="Content/Style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width" />
 
-
 </head>
 <body>
     <svg>
         <circle id="location" class="plane" r="10" stroke="white" stroke-width="3" fill="yellow" />
+        <rect fill="lime" width="100%" height="100%" />
     </svg>
-
     <script>
 
 
@@ -34,16 +30,17 @@
                 alert(xml);
                 var xmlDoc = $.parseXML(xml);
                     $xml = $(xmlDoc);
-                document.getElementById("location").style.cx = $xml.find("lat").text();
-                document.getElementById("location").style.cy = $xml.find("lon").text();
+                //document.getElementById("location").style.cx = $xml.find("lat").text();
+                //document.getElementById("location").style.cy = $xml.find("lon").text();
+                document.getElementById("location").style.cx = "270";
+                document.getElementById("location").style.cy = "150";
 
             });
         });
-        setInterval(myTimer, 250);
+        setInterval(myTimer, 3000);
 
 
 
     </script>
-
 </body>
 </html>

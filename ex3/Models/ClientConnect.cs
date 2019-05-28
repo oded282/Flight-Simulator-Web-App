@@ -96,6 +96,7 @@ namespace ex3.Models
             write("get /position/longitude-deg\r\n",nwStream);
             d.M_lon = ParseValue(read(nwStream));
 
+
         }
 
 
