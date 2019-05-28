@@ -18,7 +18,6 @@ namespace ex3.Controllers
     {
         ClientConnect client;
 
-
         private string ToXml(Data data)
         {
             //Initiate XML stuff
@@ -38,9 +37,7 @@ namespace ex3.Controllers
         [HttpPost]
         public string GetPoint()
         {
-       
-            //this.client.start();
-            
+            //client.start();
             //Data d = Data.getInstance();
             Data data = Data.getInstance();
 
@@ -52,7 +49,7 @@ namespace ex3.Controllers
         public ActionResult display(string ip , int port)
         {
             this.client = new ClientConnect();
-            //client.connect(ip, port);
+            client.connect(ip, port);
             //client.start();
 
             Data d = Data.getInstance();
