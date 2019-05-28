@@ -41,45 +41,52 @@ namespace ex3.Controllers
 
         [HttpPost]
         public string GetPoint()
-        {
-            if (this.client == null)
-            {
-                return null;
-            }
-            this.client.start();
-            
-            //Data d = Data.getInstance();
+        {                      
+            this.client.start();            
             Data data = Data.getInstance();
+
 
 
             return ToXml(data);
         }
+        
+        [HttpGet]
+        public ActionResult display(string ip, int port, int? rate)
+        {
+            Data d = Data.getInstance();
+            client.connect(ip, port);
 
+            if (String.IsNullOrEmpty(rate.ToString()))
+            {
+                client.start();
+
+                Session["lat"] = d.M_lat;
+                Session["lon"] = d.M_lon;
+                Session["first mission"] = true;
+                return View();
+            }
+
+            Session["rate"] = rate;
+            Session["first mission"] = false;
+
+            return View();
+        }
+       /* 
         [HttpGet]
         public ActionResult display(string ip , int port)
         {
             this.client.connect(ip, port);
+            client.start();
 
             Data d = Data.getInstance();
             Session["lat"] = d.M_lat;
             Session["lon"] = d.M_lon;
+            Session["first mission"] = true;
 
             return View();
         }
-
-        public ActionResult display(string ip, int port, int rate)
-        {
-           
-            client.connect(ip, port);
-            //client.start();
-
-            Data d = Data.getInstance();
-            Session["lat"] = d.M_lat;
-            Session["lon"] = d.M_lon;
-            Session["rate"] = rate;
-
-            return View();
-        }
+        
+      */
 
     }
 }

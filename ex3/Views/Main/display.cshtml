@@ -18,20 +18,33 @@
             
 <script>
 
-//        var lat = @Session["lat"];
-//        var lon = @Session["lon"];
-//        alert(lat);
-//        document.getElementById("location").style.cx = lat;
-//        document.getElementById("location").style.cy = lon;
-
     var ctx = document.getElementById("myCanvas").getContext('2d');
     ctx.canvas.width = window.innerWidth;
     ctx.canvas.height = window.innerHeight;
 
+
+    if ("True" == "@Session["first mission"]") {
+
+        var lat = (parseFloat(@Session["lat"]) + 90) * (screen.height / 180);
+        var lon = (parseFloat(@Session["lon"]) + 180) * (screen.height / 360);
+
+
+
+        ctx.beginPath();
+        ctx.arc(lat, lon, 8, 0, Math.PI * 2);
+        ctx.fillStyle = "red";
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = 3;
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+
+    } else {
+
         myTimer = (function (ctx) {
 
             $.post("@Url.Action("GetPoint", "Main")").done(function (xml) {
-                //alert(xml);
+                alert(xml);
                 var xmlDoc = $.parseXML(xml);
                 $xml = $(xmlDoc);
                 var lat = (parseFloat($xml.find("lat").text()) + 90) * (screen.height / 180);
@@ -47,15 +60,12 @@
                 ctx.fill();
                 ctx.stroke();
                 ctx.closePath();
-                //document.getElementById("location").style.cx = (parseInt($xml.find("lat").text()) + 90) * (screen.height / 180);
-                //document.getElementById("location").style.cy = (parseInt($xml.find("lon").text()) + 180) * (screen.height / 360);
-             
 
             });
         });
-    setInterval(function () { myTimer(ctx); }, 1000);
+        setInterval(function () { myTimer(ctx); }, 1000 / Session["rate"]);
 
-
+    }
 
 </script>
 </body>

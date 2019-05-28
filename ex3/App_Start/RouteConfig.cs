@@ -13,12 +13,19 @@ namespace ex3
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-
+/*
             routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{ip}/{port}",
-                defaults: new { controller = "Main", action = "display", ip ="127.0.0.1" , port = 5400}
+                "2",
+                "{controller}/{action}/{ip}/{port}",
+                new { controller = "Main", action = "display", ip ="127.0.0.1" , port = 5400}
             );
+            */
+            routes.MapRoute(
+                "name",
+                "{controller}/{action}/{ip}/{port}/{rate}",
+                 new { controller = "Main", action = "display", ip = "127.0.0.1", port = 5400, rate = 4}
+            );
+
             
         }
     }
