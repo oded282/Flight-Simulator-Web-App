@@ -18,9 +18,12 @@ namespace ex3.Controllers
     {
 
         ClientConnect client;
+        Save saver;
+        double recordTime;
 
         public MainController (){
             client = ClientConnect.getInstance();
+            saver = new Save();
         }
 
         private string ToXml(Data data)
@@ -49,6 +52,33 @@ namespace ex3.Controllers
 
             return ToXml(data);
         }
+
+        [HttpPost]
+        public string LoadPoint(string fileName)
+        {
+            Data data = Data.getInstance();
+            Load loader = Load.getInstance();
+            if (!loader.M_isLoaded) {
+                loader.loadFromFile(fileName);
+            }
+            loader.getNextPoint();
+            return ToXml(data);
+        }
+
+        [HttpPost]
+        public void savePoint(string data, string fileName)
+        {
+            if (recordTime > 0)
+            {
+                saver.addPoint(data);
+                recordTime -= 0.25;
+                return;
+            }
+            if (recordTime == 0)
+            {
+                saver.saveToFile(fileName);
+            }
+        }
         
         [HttpGet]
         public ActionResult display(string ip, int port, int? rate)
@@ -62,31 +92,37 @@ namespace ex3.Controllers
 
                 Session["lat"] = d.M_lat;
                 Session["lon"] = d.M_lon;
-                Session["first mission"] = true;
+                Session["first mission"] = "true";
                 return View();
             }
 
             Session["rate"] = rate;
-            Session["first mission"] = false;
+            Session["first mission"] = "false";
 
             return View();
         }
-       /* 
-        [HttpGet]
-        public ActionResult display(string ip , int port)
+
+        public ActionResult save(string ip, int port, int rate, int recordTime, string fileName)
         {
-            this.client.connect(ip, port);
-            client.start();
-
             Data d = Data.getInstance();
-            Session["lat"] = d.M_lat;
-            Session["lon"] = d.M_lon;
-            Session["first mission"] = true;
+            client.connect(ip, port);
+            this.recordTime = recordTime;
+
+            Session["rate"] = rate;
+            Session["fileName"] = fileName;
+
 
             return View();
         }
-        
-      */
 
+        public ActionResult load(string fileName, int rate)
+        {
+
+            Session["rate"] = rate;
+            Session["fileName"] = fileName;
+
+
+            return View();
+        }
     }
 }

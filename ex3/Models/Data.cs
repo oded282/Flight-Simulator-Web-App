@@ -12,6 +12,8 @@ namespace ex3.Models
     {
         private string m_lon = "100";
         private string m_lat = "100";
+        private string m_throttle = "0";
+        private string m_rudder = "0";
         public static Data instance = null;
 
         public string M_lon
@@ -38,6 +40,30 @@ namespace ex3.Models
             }
         }
 
+        public string M_throttle
+        {
+            get
+            {
+                return m_throttle;
+            }
+            set
+            {
+                m_throttle = value;
+            }
+        }
+
+        public string M_rudder
+        {
+            get
+            {
+                return m_rudder;
+            }
+            set
+            {
+                m_rudder = value;
+            }
+        }
+
         private Data() {}
 
         public static Data getInstance()
@@ -55,6 +81,8 @@ namespace ex3.Models
             writer.WriteStartElement("Data");
             writer.WriteElementString("lat", this.M_lat);
             writer.WriteElementString("lon", this.M_lon);
+            writer.WriteElementString("rudder", this.M_lat);
+            writer.WriteElementString("throttle", this.M_lon);
             writer.WriteEndElement();
         }
 
