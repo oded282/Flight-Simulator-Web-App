@@ -3,8 +3,8 @@ var prevLat;
 var prevLon;
 var isFirstIter = true;
 var i = 1;
-var recordTime = document.getElementById("recordTime");
-var rate = document.getElementById("rate");
+var recordTime = document.getElementById("recordTime").value;
+var rate = document.getElementById("rate").value;
 
 
 function parseXml(xml) {
@@ -93,19 +93,17 @@ if ("true" == isFirstMission) {
     
 }
 else {
-    alert("Inside SecondMisoin");
     myTimer = (function (ctx) {
 
         $.post(getPoint).done(function (xml) {
-            
             parseXml(xml);
 
             var lon = (parseFloat($xml.find("lon").text() ) + 180) * (screen.height / 360);
             var lat = (parseFloat($xml.find("lat").text()) + 90) * (screen.width / 180);
 
             draw(ctx, rout, lat, lon);
-
             if (recordTime <= 0 && recordTime > -0.2) {
+                alert("Saving..");
                 $.post(SaveToFile);
                 isSaveNeeded = "false";
             }
@@ -113,14 +111,21 @@ else {
             var isSaveNeeded = document.getElementById("isSaveNeeded").value;
             if (isSaveNeeded == "true") {
 
-                var latS = parseFloat($xml.find("lat").text());
-                var lonS = parseFloat($xml.find("lon").text());
-                var rudderS = parseFloat($xml.find("rudder").text());
-                var throttleS = parseFloat($xml.find("throttle").text());
+               // var latS = parseFloat($xml.find("lat").text());
+               // var lonS = parseFloat($xml.find("lon").text());
+               // var rudderS = parseFloat($xml.find("rudder").text());
+               // var throttleS = parseFloat($xml.find("throttle").text());
 
-                var data = latS + "," + lonS + "," + rudderS + "," + throttleS + ",";
-                //alert(data);
-                $.post(SavePoint, { data });
+                // var data = latS + "," + lonS + "," + rudderS + "," + throttleS + ",";
+                $.post(SavePoint);
+                /*
+                $.ajax({
+                    url: SavePoint,
+                    data: { data: data },
+                    type: 'post'
+                })
+                */
+                //alert(recordTime);
                 recordTime -= 0.25;
 
             }

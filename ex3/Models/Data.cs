@@ -81,8 +81,8 @@ namespace ex3.Models
             writer.WriteStartElement("Data");
             writer.WriteElementString("lat", this.M_lat);
             writer.WriteElementString("lon", this.M_lon);
-            writer.WriteElementString("rudder", this.M_lat);
-            writer.WriteElementString("throttle", this.M_lon);
+            writer.WriteElementString("rudder", this.M_rudder);
+            writer.WriteElementString("throttle", this.M_throttle);
             writer.WriteEndElement();
         }
 

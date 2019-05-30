@@ -18,7 +18,7 @@ namespace ex3
                 "save",
                 "{controller}/{action}/{ip}/{port}/{rate}/{recordTime}/{fileName}",
                  defaults: new { controller = "Main", action = "save", ip = "127.0.0.1", port = 5400, rate = 4,
-                     recordTime = 10, fileName = "flight1" }
+                     recordTime = 5, fileName = "file1" }
             );
 
             routes.MapRoute(

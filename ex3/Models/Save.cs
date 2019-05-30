@@ -10,6 +10,7 @@ namespace ex3.Models
     public class Save
     {
         string m_allData = "";
+        string m_fileName;
 
         public static Save instance = null;
 
@@ -24,6 +25,18 @@ namespace ex3.Models
             return instance;
         }
 
+        public string M_fileName
+        {
+            get
+            {
+                return m_fileName;
+            }
+            set
+            {
+                m_fileName = value;
+            }
+        }
+
         public string M_allData
         {
             get
@@ -36,16 +49,16 @@ namespace ex3.Models
             }
         }
 
-        public void saveToFile(string fileName) {
+        public void SaveToFile() {
 
-            string path = Directory.GetCurrentDirectory();
-            path += "\\" + fileName;
+            string path = System.AppDomain.CurrentDomain.BaseDirectory + M_fileName;
             List<string> result = m_allData.Split(',').ToList();
             System.IO.File.WriteAllLines(path, result);
+            m_allData = "";
         }
 
         public void addPoint(string data) { // need to get data seperated by commas.
-            m_allData += "," + data;
+            m_allData += data;
         }
     }
     #endregion
