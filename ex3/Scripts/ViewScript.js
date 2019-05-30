@@ -3,6 +3,8 @@ var prevLat;
 var prevLon;
 var isFirstIter = true;
 var i = 1;
+var recordTime = document.getElementById("recordTime");
+var rate = document.getElementById("rate");
 
 
 function parseXml(xml) {
@@ -98,28 +100,35 @@ else {
             
             parseXml(xml);
 
-
-
             var lon = (parseFloat($xml.find("lon").text() ) + 180) * (screen.height / 360);
             var lat = (parseFloat($xml.find("lat").text()) + 90) * (screen.width / 180);
-            var rudder = parseFloat($xml.find("rudder").text());
-            var throttle = parseFloat($xml.find("throttle").text());
-
-
 
             draw(ctx, rout, lat, lon);
-            if (document.getElementById("isSaveNeeded").value == "true") {
 
-                var data = lat + "," + lon + "," + rudder + "," + throttle + ",";
+            if (recordTime <= 0 && recordTime > -0.2) {
+                $.post(SaveToFile);
+                isSaveNeeded = "false";
+            }
+
+            var isSaveNeeded = document.getElementById("isSaveNeeded").value;
+            if (isSaveNeeded == "true") {
+
+                var latS = parseFloat($xml.find("lat").text());
+                var lonS = parseFloat($xml.find("lon").text());
+                var rudderS = parseFloat($xml.find("rudder").text());
+                var throttleS = parseFloat($xml.find("throttle").text());
+
+                var data = latS + "," + lonS + "," + rudderS + "," + throttleS + ",";
                 //alert(data);
-                $.post(savePoint, { data });
+                $.post(SavePoint, { data });
+                recordTime -= 0.25;
 
             }
-            
 
+          
         });
 
     });
-    setInterval(function () { myTimer(ctx); }, 1000);
+    setInterval(function () { myTimer(ctx); }, 1000 / rate);
 
 }
