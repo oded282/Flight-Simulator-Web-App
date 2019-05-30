@@ -83,6 +83,19 @@ namespace ex3.Controllers
         [HttpGet]
         public ActionResult display(string ip, int port, int? rate)
         {
+
+            if (!ip.Contains('.'))
+            {
+                Session["rate"] = rate;
+                Session["fileName"] = ip;
+                Session["isLoad"] = true;
+
+                return View();
+
+            }
+
+            Session["isLoad"] = false;
+
             Data d = Data.getInstance();
             client.connect(ip, port);
 
