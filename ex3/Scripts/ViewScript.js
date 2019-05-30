@@ -1,5 +1,4 @@
-﻿
-var prevLat;
+﻿var prevLat;
 var prevLon;
 var isFirstIter = true;
 var i = 1;
@@ -16,16 +15,13 @@ function parseXml(xml) {
 function draw(ctx, rout, lat, lon) {
 
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-    //var lat = (Math.floor(Math.random() * 600));
-    //var lon = (Math.floor(Math.random() * 500));
 
 
     lat = lat + i;
     lon = lon + i;
     createPoint(ctx, lat, lon);
     i += 10;
-    //alert(lat);
-    // alert(lon);
+
 
     createLine(rout, lat, lon);
     savePrev(lat, lon);
@@ -61,9 +57,6 @@ function createPoint(ctx, lat, lon) {
 }
 
 
-//var t = session;
-//var s = t["lat"];
-//alert(s);
 
 var canvacePoint = document.getElementById("point");
 var canvasRout = document.getElementById("rout");
@@ -111,29 +104,25 @@ else {
             var isSaveNeeded = document.getElementById("isSaveNeeded").value;
             if (isSaveNeeded == "true") {
 
-               // var latS = parseFloat($xml.find("lat").text());
-               // var lonS = parseFloat($xml.find("lon").text());
-               // var rudderS = parseFloat($xml.find("rudder").text());
-               // var throttleS = parseFloat($xml.find("throttle").text());
-
-                // var data = latS + "," + lonS + "," + rudderS + "," + throttleS + ",";
+              
                 $.post(SavePoint);
-                /*
-                $.ajax({
-                    url: SavePoint,
-                    data: { data: data },
-                    type: 'post'
-                })
-                */
-                //alert(recordTime);
+              
                 recordTime -= 0.25;
-
             }
 
-          
+            if (document.getElementById("isDone").value == "true") {
+
+                alert("done");
+                stopInterval();
+            }
+         
         });
 
     });
-    setInterval(function () { myTimer(ctx); }, 1000 / rate);
+    var myVar = setInterval(function () { myTimer(ctx); }, 1000 / rate);
+
+    function stopInterval() {
+        clearInterval(myVar);
+    }
 
 }

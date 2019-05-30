@@ -10,9 +10,10 @@ namespace ex3.Models
     #region singleton
     public class Load
     {
-        private bool m_isLoaded = false;
-        string[] m_data;
-        int index = 0;
+        bool m_isLoaded = false;
+        bool m_isDone = false;
+        List<string> m_data;
+        string m_fileName;
 
         public static Load instance = null;
 
@@ -25,7 +26,31 @@ namespace ex3.Models
             return instance;
         }
 
-        public string[] M_data
+        public bool M_isDone
+        {
+            get
+            {
+                return m_isDone;
+            }
+            set
+            {
+                m_isDone = value;
+            }
+        }
+
+        public string M_fileName
+        {
+            get
+            {
+                return m_fileName;
+            }
+            set
+            {
+                m_fileName = value;
+            }
+        }
+
+        public List<string> M_data
         {
             get
             {
@@ -49,25 +74,33 @@ namespace ex3.Models
             }
         }
 
-        public void loadFromFile(string fileName)
+        public void loadFromFile()
         {
             string path = Directory.GetCurrentDirectory();
-            path += "\\" + fileName;
-            m_data = System.IO.File.ReadAllLines(path);
+            path += "\\" + m_fileName;
+            string[] data = System.IO.File.ReadAllLines(path);
+            m_data = data.ToList<string>();
             instance.m_isLoaded = true; 
         }
 
         public void getNextPoint()
         {
-            Data data = Data.getInstance();
-            data.M_lat = m_data[0];
-            data.M_lon = m_data[1];
-            data.M_rudder = m_data[2];
-            data.M_throttle = m_data[3];
-            Array.Copy(m_data, 4, m_data, 0, m_data.Length - 4);
+            if (!(this.M_data.Count == 0))
+            {
+                Data data = Data.getInstance();
+                data.M_lat = m_data[0];
+                data.M_lon = m_data[1];
+                data.M_rudder = m_data[2];
+                data.M_throttle = m_data[3];
+                m_data.RemoveRange(0, 4);
+            }
+            else
+            {
+                this.M_isDone = true;
+            }
         }
 
-
+    
     }
     #endregion
 }

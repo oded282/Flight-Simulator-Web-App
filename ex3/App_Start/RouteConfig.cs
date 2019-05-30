@@ -17,21 +17,17 @@ namespace ex3
             routes.MapRoute(
                 "save",
                 "{controller}/{action}/{ip}/{port}/{rate}/{recordTime}/{fileName}",
-                 defaults: new { controller = "Main", action = "save", ip = "127.0.0.1", port = 5400, rate = 4,
+                  new { controller = "Main", action = "save", ip = "127.0.0.1", port = 5400, rate = 4,
                      recordTime = 5, fileName = "file1" }
             );
 
             routes.MapRoute(
                 "name",
                 "{controller}/{action}/{ip}/{port}/{rate}",
-                 new { controller = "Main", action = "display", ip = "127.0.0.1", port = 5400, rate = 4}
+                defaults: new { controller = "Main", action = "display", ip = "file1", port = 4, rate = UrlParameter.Optional}
             );
                 
-            routes.MapRoute(
-                "load",
-                "{controller}/{action}/{fileName}/{rate}",
-                 new { controller = "Main", action = "load", fileName = "flight1" ,rate = 4}
-            );
+           
 
         }
     }

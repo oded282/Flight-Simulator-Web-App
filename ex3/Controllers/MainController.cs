@@ -19,10 +19,14 @@ namespace ex3.Controllers
 
         ClientConnect client;
         Save saver;
+        Load loader;
+        Data data;
 
         public MainController (){
             client = ClientConnect.getInstance();
             saver = Save.getInstance();
+            loader = Load.getInstance();
+            data = Data.getInstance();
 
         }
 
@@ -44,25 +48,19 @@ namespace ex3.Controllers
 
         [HttpPost]
         public string GetPoint()
-        {                      
-            this.client.start();            
-            Data data = Data.getInstance();
+        {     
+            if (loader.M_isLoaded)
+            {
+                loader.getNextPoint();
+                Session["isDone"] = loader.M_isDone.ToString();
 
-
-
-            return ToXml(data);
-        }
-
-        [HttpPost]
-        public string LoadPoint(string fileName)
-        {
-            Data data = Data.getInstance();
-            Load loader = Load.getInstance();
-            if (!loader.M_isLoaded) {
-                loader.loadFromFile(fileName);
             }
-            loader.getNextPoint();
-            return ToXml(data);
+            else
+            {
+                this.client.start(); 
+            }
+
+            return ToXml(this.data);
         }
 
         [HttpPost]
@@ -74,10 +72,10 @@ namespace ex3.Controllers
         [HttpPost]
         public void SavePoint()
         {
-            string lat = Data.getInstance().M_lat;
-            string lon = Data.getInstance().M_lon;
-            string rudder = Data.getInstance().M_rudder;
-            string throttle = Data.getInstance().M_throttle;
+            string lat = this.data.M_lat;
+            string lon = this.data.M_lon;
+            string rudder = this.data.M_rudder;
+            string throttle = this.data.M_throttle;
             string data = lat + "," + lon + "," + rudder + "," + throttle + ",";
             saver.addPoint(data);
 
@@ -86,47 +84,45 @@ namespace ex3.Controllers
         [HttpGet]
         public ActionResult display(string ip, int port, int? rate)
         {
-            Data d = Data.getInstance();
-            client.connect(ip, port);
 
+            Session["isDone"] = "false";
             Session["isSaveNeeded"] = "false";
+            Session["first mission"] = "false";
+
+            if (!ip.Contains('.'))
+            {
+                Session["rate"] = port;
+                this.loader.M_fileName = ip;
+                this.loader.loadFromFile();
+                this.loader.M_isLoaded = true;
+
+                return View();
+
+            }
+
+            client.connect(ip, port);
 
             if (String.IsNullOrEmpty(rate.ToString()))
             {
                 client.start();
                 rate = -1;
-                Session["lat"] = d.M_lat;
-                Session["lon"] = d.M_lon;
+                Session["lat"] = this.data.M_lat;
+                Session["lon"] = this.data.M_lon;
                 Session["first mission"] = "true";
                 return View();
             }
 
-            Session["first mission"] = "false";
             Session["rate"] = rate;
 
-
-            if (!ip.Contains('.'))
-            {
-                Session["fileName"] = ip;
-                Session["isLoad"] = true;
-
-                return View();
-
-            }
-
-            Session["isLoad"] = false;
-
-            
 
             return View();
         }
 
         public ActionResult save(string ip, int port, int rate, int recordTime, string fileName)
         {
-            Data d = Data.getInstance();
             client.connect(ip, port);
              saver.M_fileName = fileName;
-
+            Session["isDone"] = "false";
             Session["rate"] = rate;
             Session["isSaveNeeded"] = "true";
             Session["first mission"] = "false";
