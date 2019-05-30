@@ -18,13 +18,14 @@ namespace ex3.Controllers
     {
 
         ClientConnect client;
-        Save saver;
         string fileName;
         double recordTime;
+        Save saver;
 
         public MainController (){
             client = ClientConnect.getInstance();
-            saver = new Save();
+            saver = Save.getInstance();
+
         }
 
         private string ToXml(Data data)
@@ -67,19 +68,16 @@ namespace ex3.Controllers
         }
 
         [HttpPost]
-        public void savePoint(string data)
+        public void SaveToFile()
         {
-            if (recordTime > 0)
-            {
-                saver.addPoint(data);
-                recordTime -= 0.25;
-                return;
-            }
-            if (recordTime == 0)
-            {
-                saver.saveToFile(this.fileName);
-                recordTime -= 0.25;
-            }
+            saver.saveToFile(this.fileName);
+        }
+
+        [HttpPost]
+        public void SavePoint(string data)
+        {
+            saver.addPoint(data);
+
         }
         
         [HttpGet]
@@ -106,7 +104,7 @@ namespace ex3.Controllers
             if (String.IsNullOrEmpty(rate.ToString()))
             {
                 client.start();
-
+                rate = -1;
                 Session["lat"] = d.M_lat;
                 Session["lon"] = d.M_lon;
                 Session["first mission"] = "true";
@@ -130,8 +128,6 @@ namespace ex3.Controllers
             Session["fileName"] = fileName;
             Session["isSaveNeeded"] = "true";
             Session["first mission"] = "false";
-
-
 
             return View("display");
         }

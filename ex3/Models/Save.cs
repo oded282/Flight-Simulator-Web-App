@@ -6,11 +6,23 @@ using System.Web;
 
 namespace ex3.Models
 {
+    #region singletone
     public class Save
     {
         string m_allData = "";
 
-        public Save() { }
+        public static Save instance = null;
+
+        private Save() { }
+
+        public static Save getInstance()
+        {
+            if (instance == null)
+            {
+                instance = new Save();
+            }
+            return instance;
+        }
 
         public string M_allData
         {
@@ -36,4 +48,5 @@ namespace ex3.Models
             m_allData += "," + data;
         }
     }
+    #endregion
 }
