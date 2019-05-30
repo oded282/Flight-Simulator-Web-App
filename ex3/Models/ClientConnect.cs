@@ -95,6 +95,10 @@ namespace ex3.Models
             d.M_lat = parseValue(read(nwStream));
             write("get /position/longitude-deg\r\n",nwStream);
             d.M_lon = parseValue(read(nwStream));
+            write("get /controls/flight/rudder\r\n", nwStream);
+            d.M_rudder = parseValue(read(nwStream));
+            write("get /controls/engines/current-engine/throttle\r\n", nwStream);
+            d.M_throttle = parseValue(read(nwStream));
 
 
         }

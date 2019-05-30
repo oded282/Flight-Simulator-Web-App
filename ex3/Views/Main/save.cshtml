@@ -16,37 +16,6 @@
 
     <canvas id="myCanvas"> </canvas>
 
-    <script>
-
-    var ctx = document.getElementById("myCanvas").getContext('2d');
-    ctx.canvas.width = window.innerWidth;
-    ctx.canvas.height = window.innerHeight;
-
-    myTimer = (function (ctx) {
-
-        $.post("@Url.Action("GetPoint", "Main")").done(function (xml) {
-            alert(xml);
-            var xmlDoc = $.parseXML(xml);
-            $xml = $(xmlDoc);
-            var lat = (parseFloat($xml.find("lat").text()) + 90) * (screen.height / 180);
-            var lon = (parseFloat($xml.find("lon").text()) + 180) * (screen.height / 360);
-            alert(lat);
-            alert(lon);
-
-            ctx.beginPath();
-            ctx.arc(lat, lon, 8, 0, Math.PI * 2);
-            ctx.fillStyle = "red";
-            ctx.strokeStyle = "black";
-            ctx.lineWidth = 3;
-            ctx.fill();
-            ctx.stroke();
-            ctx.closePath();
-            // Another function that calls to savePoint func in mainController.
-               $.post("@Url.Action("savePoint,"Main")")
-        });
-    });
-    setInterval(function () { myTimer(ctx); }, 1000 / Session["rate"]);
-
-    </script>
+    
 </body>
 </html>

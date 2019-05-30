@@ -4,10 +4,6 @@ var prevLon;
 var isFirstIter = true;
 var i = 1;
 
-var t = document.getElementById("isSaveNeeded").value;
-
-
-
 
 function parseXml(xml) {
     var xmlDoc = $.parseXML(xml);
@@ -34,8 +30,6 @@ function draw(ctx, rout, lat, lon) {
 
 
 }
-
-
 function savePrev(lat, lon) {
     prevLat = lat;
     prevLon = lon;
@@ -52,7 +46,6 @@ function createLine(rout, lat, lon) {
     }
     isFirstIter = false;
 }
-
 
 function createPoint(ctx, lat, lon) {
     ctx.beginPath();
@@ -73,7 +66,6 @@ function createPoint(ctx, lat, lon) {
 var canvacePoint = document.getElementById("point");
 var canvasRout = document.getElementById("rout");
 
-
 canvacePoint.width = window.innerWidth;
 canvacePoint.height = window.innerHeight;
 canvacePoint.style.position = "absolute";
@@ -86,10 +78,8 @@ var ctx = canvacePoint.getContext("2d");
 var rout = canvasRout.getContext("2d");
 
 
-
 var isFirstMission = document.getElementById("first").value;
 if ("true" == isFirstMission) {
-
 
     var lat = document.getElementById("lat").value;
     var lon = document.getElementById("lat").value;
@@ -101,10 +91,10 @@ if ("true" == isFirstMission) {
     
 }
 else {
-
+    alert("Inside SecondMisoin");
     myTimer = (function (ctx) {
 
-        $.post(postUrl).done(function (xml) {
+        $.post(getPoint).done(function (xml) {
             
             parseXml(xml);
 
@@ -112,13 +102,17 @@ else {
 
             var lon = (parseFloat($xml.find("lon").text() ) + 180) * (screen.height / 360);
             var lat = (parseFloat($xml.find("lat").text()) + 90) * (screen.width / 180);
+            var rudder = parseFloat($xml.find("rudder").text());
+            var throttle = parseFloat($xml.find("throttle").text());
+
 
 
             draw(ctx, rout, lat, lon);
-            alert(document.getElementById("isSaveNeeded").value);
-            if (document.getElementById("isSaveNeeded").value) {
+            if (document.getElementById("isSaveNeeded").value == "true") {
 
-                alert("save");
+                var data = lat + "," + lon + "," + rudder + "," + throttle + ",";
+                //alert(data);
+                $.post(savePoint, { data });
 
             }
             

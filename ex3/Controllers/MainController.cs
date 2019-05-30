@@ -19,6 +19,7 @@ namespace ex3.Controllers
 
         ClientConnect client;
         Save saver;
+        string fileName;
         double recordTime;
 
         public MainController (){
@@ -66,7 +67,7 @@ namespace ex3.Controllers
         }
 
         [HttpPost]
-        public void savePoint(string data, string fileName)
+        public void savePoint(string data)
         {
             if (recordTime > 0)
             {
@@ -76,7 +77,8 @@ namespace ex3.Controllers
             }
             if (recordTime == 0)
             {
-                saver.saveToFile(fileName);
+                saver.saveToFile(this.fileName);
+                recordTime -= 0.25;
             }
         }
         
@@ -95,7 +97,7 @@ namespace ex3.Controllers
             }
 
             Session["isLoad"] = false;
-            Session["isSaveNeeded"] = false;
+            Session["isSaveNeeded"] = "false";
 
 
             Data d = Data.getInstance();
@@ -122,15 +124,16 @@ namespace ex3.Controllers
             Data d = Data.getInstance();
             client.connect(ip, port);
             this.recordTime = recordTime;
+            this.fileName = fileName;
 
             Session["rate"] = rate;
             Session["fileName"] = fileName;
-            Session["isSaveNeeded"] = true;
+            Session["isSaveNeeded"] = "true";
             Session["first mission"] = "false";
 
 
 
-            return View();
+            return View("display");
         }
 
         public ActionResult load(string fileName, int rate)
