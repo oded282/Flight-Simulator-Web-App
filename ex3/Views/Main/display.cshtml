@@ -22,14 +22,28 @@
 
 <body background="~/Content/background.png" style="background-size:cover;background-attachment:fixed">
 
-    <canvas id="point" > </canvas>
-    <canvas id="rout" > </canvas>
+    <canvas id="point"> </canvas>
+    <canvas id="rout"> </canvas>
+
+    <input type="hidden" id="session" value=@Session>
 
     <input type="hidden" id="lat" value=@Session["lat"]>
 
     <input type="hidden" id="lon" value=@Session[" lon"]>
 
     <input type="hidden" id="first" value=@Session["first mission"]>
+
+    <input type="hidden" id="file" value=@Session["file name"]>
+
+    <input type="hidden" id="first" value=@Session["file name"]>
+
+    <input type="hidden" id="save" value=@Session["isSaveNeeded"]>
+
+
+
+
+
+
 
 
 
@@ -38,7 +52,7 @@
     <script>
 
     var postUrl = '@Url.Action("GetPoint", "Main")';
-
+    var session = @Session;
     </script>
 
 

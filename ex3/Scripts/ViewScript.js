@@ -4,7 +4,57 @@ var prevLon;
 var isFirstIter = true;
 var i = 1;
 
-var createPoint = function (ctx, lat, lon) {
+var t = document.getElementById("isSaveNeeded").value;
+
+
+
+
+function parseXml(xml) {
+    var xmlDoc = $.parseXML(xml);
+    $xml = $(xmlDoc);
+}
+
+
+function draw(ctx, rout, lat, lon) {
+
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    //var lat = (Math.floor(Math.random() * 600));
+    //var lon = (Math.floor(Math.random() * 500));
+
+
+    lat = lat + i;
+    lon = lon + i;
+    createPoint(ctx, lat, lon);
+    i += 10;
+    //alert(lat);
+    // alert(lon);
+
+    createLine(rout, lat, lon);
+    savePrev(lat, lon);
+
+
+}
+
+
+function savePrev(lat, lon) {
+    prevLat = lat;
+    prevLon = lon;
+}
+
+function createLine(rout, lat, lon) {
+    if (!isFirstIter) {
+        rout.beginPath();
+        rout.moveTo(prevLat, prevLon);
+        rout.lineTo(lat, lon);
+        rout.strokeStyle = "red";
+        rout.stroke();
+        ctx.closePath();
+    }
+    isFirstIter = false;
+}
+
+
+function createPoint(ctx, lat, lon) {
     ctx.beginPath();
     ctx.arc(lat, lon, 8, 0, Math.PI * 2);
     ctx.fillStyle = "red";
@@ -14,6 +64,11 @@ var createPoint = function (ctx, lat, lon) {
     ctx.stroke();
     ctx.closePath();
 }
+
+
+//var t = session;
+//var s = t["lat"];
+//alert(s);
 
 var canvacePoint = document.getElementById("point");
 var canvasRout = document.getElementById("rout");
@@ -43,42 +98,33 @@ if ("true" == isFirstMission) {
     lon = (parseFloat(lon) + 180) * (screen.height / 360);
 
     createPoint(ctx, lat, lon);
-
+    
 }
 else {
 
     myTimer = (function (ctx) {
 
         $.post(postUrl).done(function (xml) {
-
-            var xmlDoc = $.parseXML(xml);
-            $xml = $(xmlDoc);
-            ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-            //var lat = (Math.floor(Math.random() * 600));
-            //var lon = (Math.floor(Math.random() * 500));
             
+            parseXml(xml);
+
+
+
             var lon = (parseFloat($xml.find("lon").text() ) + 180) * (screen.height / 360);
             var lat = (parseFloat($xml.find("lat").text()) + 90) * (screen.width / 180);
-            lat = lat + i;
-            lon = lon + i;
-            createPoint(ctx, lat, lon);
-            i += 10;
-             //alert(lat);
-            // alert(lon);
-            
-            if (isFirstIter) {
-                rout.beginPath();
-                rout.moveTo(prevLat, prevLon);
-                rout.lineTo(lat, lon);
-                rout.strokeStyle = "red";
-                // rout.lineWidth = 10;
-                rout.stroke();
-                ctx.closePath();
+
+
+            draw(ctx, rout, lat, lon);
+            alert(document.getElementById("isSaveNeeded").value);
+            if (document.getElementById("isSaveNeeded").value) {
+
+                alert("save");
+
             }
-            prevLat = lat;
-            prevLon = lon;
+            
 
         });
+
     });
     setInterval(function () { myTimer(ctx); }, 1000);
 

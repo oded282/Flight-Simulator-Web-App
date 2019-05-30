@@ -42,6 +42,7 @@
             ctx.stroke();
             ctx.closePath();
             // Another function that calls to savePoint func in mainController.
+               $.post("@Url.Action("savePoint,"Main")")
         });
     });
     setInterval(function () { myTimer(ctx); }, 1000 / Session["rate"]);

@@ -95,6 +95,8 @@ namespace ex3.Controllers
             }
 
             Session["isLoad"] = false;
+            Session["isSaveNeeded"] = false;
+
 
             Data d = Data.getInstance();
             client.connect(ip, port);
@@ -123,6 +125,9 @@ namespace ex3.Controllers
 
             Session["rate"] = rate;
             Session["fileName"] = fileName;
+            Session["isSaveNeeded"] = true;
+            Session["first mission"] = "false";
+
 
 
             return View();
