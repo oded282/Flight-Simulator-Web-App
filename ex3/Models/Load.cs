@@ -76,8 +76,8 @@ namespace ex3.Models
 
         public void loadFromFile()
         {
-            string path = Directory.GetCurrentDirectory();
-            path += "\\" + m_fileName;
+            string path = System.AppDomain.CurrentDomain.BaseDirectory;
+            path += m_fileName;
             string[] data = System.IO.File.ReadAllLines(path);
             m_data = data.ToList<string>();
             instance.m_isLoaded = true; 

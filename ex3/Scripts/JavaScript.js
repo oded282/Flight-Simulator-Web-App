@@ -4,7 +4,6 @@ var isFirstIter = true;
 var i = 1;
 var recordTime = document.getElementById("recordTime").value;
 var rate = document.getElementById("rate").value;
-var isSave = "true";
 
 
 function parseXml(xml) {
@@ -47,7 +46,7 @@ function createLine(rout, lat, lon) {
 }
 
 function createPoint(ctx, lat, lon) {
-    
+
     ctx.beginPath();
     ctx.arc(lat, lon, 8, 0, Math.PI * 2);
     ctx.fillStyle = "red";
@@ -85,45 +84,40 @@ if ("true" == isFirstMission) {
     lon = (parseFloat(lon) + 180) * (screen.height / 360);
 
     createPoint(ctx, lat, lon);
-    
+
 }
 else {
     myTimer = (function (ctx) {
 
         $.post(getPoint).done(function (xml) {
             parseXml(xml);
-            var isSaveNeeded = document.getElementById("isSaveNeeded").value;
-            var lon = (parseFloat($xml.find("lon").text()) + 180) * (canvacePoint.height / 360);
-            var lat = (parseFloat($xml.find("lat").text()) + 90) * (canvacePoint.width / 180);
+
+            var lon = (parseFloat($xml.find("lon").text()) + 180) * (screen.height / 360);
+            var lat = (parseFloat($xml.find("lat").text()) + 90) * (screen.width / 180);
             
-            if (isSaveNeeded == "false") {
-                recordTime = -1;
-            }
-
-
-            draw(ctx, rout, lat, lon);
-            if (recordTime <= 0 && recordTime > -0.2) {
+            draw(ctx, rout, lat,lon );
+            if (recordTime <= 0 && recordTime > -0.2) {             
                 alert("Saving..");
-                isSave = "false";
                 $.post(SaveToFile);
-                recordTime -= 0.25;                
-                
+                isSaveNeeded = "false";
+                alert("done");
+                stopInterval();
             }
 
-            
-            if (isSaveNeeded == "true" && isSave == "true") {
-             
+            var isSaveNeeded = document.getElementById("isSaveNeeded").value;
+            if (isSaveNeeded == "true") {
+
+
                 $.post(SavePoint);
-              
+
                 recordTime -= 0.25;
-                
             }
-            
+
             if (document.getElementById("isDone").value == "true") {
 
                 alert("done");
                 stopInterval();
-            }     
+            }
         });
     });
     var myVar = setInterval(function () { myTimer(ctx); }, 1000 / rate);

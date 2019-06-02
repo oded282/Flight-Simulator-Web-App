@@ -50,9 +50,12 @@ namespace ex3.Models
         }
 
         public void SaveToFile() {
-
             string path = System.AppDomain.CurrentDomain.BaseDirectory + M_fileName;
             List<string> result = m_allData.Split(',').ToList();
+
+            if (File.Exists(path)){
+                System.IO.File.Delete(path);
+            }
             System.IO.File.WriteAllLines(path, result);
             m_allData = "";
         }
@@ -63,3 +66,4 @@ namespace ex3.Models
     }
     #endregion
 }
+

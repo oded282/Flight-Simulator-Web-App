@@ -72,6 +72,8 @@ namespace ex3.Controllers
         [HttpPost]
         public void SavePoint()
         {
+          
+
             string lat = this.data.M_lat;
             string lon = this.data.M_lon;
             string rudder = this.data.M_rudder;
@@ -91,6 +93,7 @@ namespace ex3.Controllers
 
             if (!ip.Contains('.'))
             {
+                rate = -1;
                 Session["rate"] = port;
                 this.loader.M_fileName = ip;
                 this.loader.loadFromFile();
