@@ -55,6 +55,7 @@ namespace ex3.Controllers
 
                 if (loader.M_isDone)
                 {
+                    loader.M_isDone = false;
                     StringBuilder sb = new StringBuilder();
                     XmlWriterSettings settings = new XmlWriterSettings();
                     XmlWriter writer = XmlWriter.Create(sb, settings);
@@ -142,7 +143,7 @@ namespace ex3.Controllers
         public ActionResult save(string ip, int port, int rate, int recordTime, string fileName)
         {
             client.connect(ip, port);
-             saver.M_fileName = fileName;
+            saver.M_fileName = fileName;
             Session["isDone"] = "false";
             Session["rate"] = rate;
             Session["isSaveNeeded"] = "true";
@@ -151,7 +152,6 @@ namespace ex3.Controllers
 
             return View("display");
         }
-
-       
+      
     }
 }

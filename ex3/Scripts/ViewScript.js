@@ -1,7 +1,6 @@
 ﻿var prevLat;
 var prevLon;
 var isFirstIter = true;
-var i = 1;
 var recordTime = document.getElementById("recordTime").value;
 var rate = document.getElementById("rate").value;
 var isSave = "true";
@@ -18,16 +17,10 @@ function draw(ctx, rout, lat, lon) {
 
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-
-    lat = lat + i;
-    lon = lon + i;
     createPoint(ctx, lat, lon);
-    i += 10;
-
-
+  
     createLine(rout, lat, lon);
     savePrev(lat, lon);
-
 
 }
 function savePrev(lat, lon) {
@@ -78,13 +71,6 @@ var rout = canvasRout.getContext("2d");
 
 var isFirstMission = document.getElementById("first").value;
 if ("true" == isFirstMission) {
-    /*
-    var lat = document.getElementById("lat").value;
-    var lon = document.getElementById("lon").value;
-
-    lat = (parseFloat(lat) + 90) * (canvacePoint.height / 180);
-    lon = (parseFloat(lon) + 180) * (canvacePoint.width / 360);
-    */
     
     $.post(getPoint).done(function (xml) {
         parseXml(xml);

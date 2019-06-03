@@ -13,13 +13,6 @@ namespace ex3
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                "save",
-                "{action}/{ip}/{port}/{rate}/{recordTime}/{fileName}",
-                 defaults: new { controller = "Main", action = "save", ip = "127.0.0.1", port = 5400, rate = 4,
-                     recordTime = 7, fileName = "file1" }
-            );
-                      
 
             routes.MapRoute(
                  "display",
@@ -27,6 +20,13 @@ namespace ex3
                  defaults: new { controller = "Main", action = "display", ip = "file1", port = 4, rate = UrlParameter.Optional }
              );
 
+            routes.MapRoute(
+                "save",
+                "{action}/{ip}/{port}/{rate}/{recordTime}/{fileName}",
+                 defaults: new { controller = "Main", action = "save", ip = "127.0.0.1", port = 5400, rate = 4,
+                     recordTime = 7, fileName = "file1" }
+            );
+                                
         }
     }
 }
