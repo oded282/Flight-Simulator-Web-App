@@ -37,8 +37,8 @@ function savePrev(lat, lon) {
 function createLine(rout, lat, lon) {
     if (!isFirstIter) {
         rout.beginPath();
-        rout.moveTo(prevLat, prevLon);
-        rout.lineTo(lat, lon);
+        rout.moveTo(prevLon, prevLat);
+        rout.lineTo(lon,lat);
         rout.strokeStyle = "red";
         rout.stroke();
         ctx.closePath();
@@ -49,7 +49,7 @@ function createLine(rout, lat, lon) {
 function createPoint(ctx, lat, lon) {
     
     ctx.beginPath();
-    ctx.arc(lat, lon, 8, 0, Math.PI * 2);
+    ctx.arc(lon, lat,  8, 0, Math.PI * 2);
     ctx.fillStyle = "red";
     ctx.strokeStyle = "black";
     ctx.lineWidth = 3;
@@ -81,21 +81,23 @@ if ("true" == isFirstMission) {
     var lat = document.getElementById("lat").value;
     var lon = document.getElementById("lat").value;
 
-    lat = (parseFloat(lat) + 90) * (screen.height / 180);
-    lon = (parseFloat(lon) + 180) * (screen.height / 360);
+    lat = (parseFloat(lat) + 90) * (canvacePoint.height / 180);
+    lon = (parseFloat(lon) + 180) * (canvacePoint.width / 360);
 
     createPoint(ctx, lat, lon);
     
 }
 else {
     myTimer = (function (ctx) {
-
+        alert("start...");
         $.post(getPoint).done(function (xml) {
             parseXml(xml);
+            var isDone = document.getElementById("isDone").value;
+            alert(isDone);
+
             var isSaveNeeded = document.getElementById("isSaveNeeded").value;
-            var lon = (parseFloat($xml.find("lon").text()) + 180) * (canvacePoint.height / 360);
-            var lat = (parseFloat($xml.find("lat").text()) + 90) * (canvacePoint.width / 180);
-            
+            var lon = (parseFloat($xml.find("lon").text()) + 180) * (canvacePoint.width / 360);
+            var lat = (parseFloat($xml.find("lat").text()) + 90) * (canvacePoint.height / 180);
             if (isSaveNeeded == "false") {
                 recordTime = -1;
             }
@@ -119,7 +121,7 @@ else {
                 
             }
             
-            if (document.getElementById("isDone").value == "true") {
+            if (isDone == "true") {
 
                 alert("done");
                 stopInterval();

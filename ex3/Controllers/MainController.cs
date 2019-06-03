@@ -134,14 +134,6 @@ namespace ex3.Controllers
             return View("display");
         }
 
-        public ActionResult load(string fileName, int rate)
-        {
-
-            Session["rate"] = rate;
-            Session["fileName"] = fileName;
-
-
-            return View();
-        }
+       
     }
 }

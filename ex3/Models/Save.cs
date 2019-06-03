@@ -52,7 +52,7 @@ namespace ex3.Models
         public void SaveToFile() {
             string path = System.AppDomain.CurrentDomain.BaseDirectory + M_fileName;
             List<string> result = m_allData.Split(',').ToList();
-
+            result.RemoveAt(result.Count - 1);
             if (File.Exists(path)){
                 System.IO.File.Delete(path);
             }
