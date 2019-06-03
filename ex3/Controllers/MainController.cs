@@ -30,7 +30,7 @@ namespace ex3.Controllers
 
         }
 
-        private string ToXml(Data data)
+        private string ToXml()
         {
             //Initiate XML stuff
             StringBuilder sb = new StringBuilder();
@@ -39,7 +39,7 @@ namespace ex3.Controllers
 
             writer.WriteStartDocument();
 
-            data.ToXml(writer);
+            this.data.ToXml(writer);
 
             writer.WriteEndDocument();
             writer.Flush();
@@ -52,7 +52,22 @@ namespace ex3.Controllers
             if (loader.M_isLoaded)
             {
                 loader.getNextPoint();
-                Session["isDone"] = loader.M_isDone.ToString();
+
+                if (loader.M_isDone)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    XmlWriterSettings settings = new XmlWriterSettings();
+                    XmlWriter writer = XmlWriter.Create(sb, settings);
+
+                    writer.WriteStartDocument();
+
+                    writer.WriteElementString("done", "done");
+
+                    writer.WriteEndDocument();
+                    writer.Flush();
+                    return sb.ToString();
+                    
+                }
 
             }
             else
@@ -60,7 +75,7 @@ namespace ex3.Controllers
                 this.client.start(); 
             }
 
-            return ToXml(this.data);
+            return ToXml();
         }
 
         [HttpPost]
@@ -90,8 +105,9 @@ namespace ex3.Controllers
             Session["isDone"] = "false";
             Session["isSaveNeeded"] = "false";
             Session["first mission"] = "false";
+            IPAddress IP;
 
-            if (!ip.Contains('.'))
+            if (!IPAddress.TryParse(ip, out IP))
             {
                 rate = -1;
                 Session["rate"] = port;
@@ -112,6 +128,8 @@ namespace ex3.Controllers
                 Session["lat"] = this.data.M_lat;
                 Session["lon"] = this.data.M_lon;
                 Session["first mission"] = "true";
+                this.loader.M_isLoaded = false;
+
                 return View();
             }
 

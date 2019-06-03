@@ -5,6 +5,7 @@ var i = 1;
 var recordTime = document.getElementById("recordTime").value;
 var rate = document.getElementById("rate").value;
 var isSave = "true";
+var myVar;
 
 
 function parseXml(xml) {
@@ -77,24 +78,35 @@ var rout = canvasRout.getContext("2d");
 
 var isFirstMission = document.getElementById("first").value;
 if ("true" == isFirstMission) {
-
+    /*
     var lat = document.getElementById("lat").value;
-    var lon = document.getElementById("lat").value;
+    var lon = document.getElementById("lon").value;
 
     lat = (parseFloat(lat) + 90) * (canvacePoint.height / 180);
     lon = (parseFloat(lon) + 180) * (canvacePoint.width / 360);
-
-    createPoint(ctx, lat, lon);
+    */
     
+    $.post(getPoint).done(function (xml) {
+        parseXml(xml);
+
+        var lon = (parseFloat($xml.find("lon").text()) + 180) * (canvacePoint.width / 360);
+        var lat = (parseFloat($xml.find("lat").text()) + 90) * (canvacePoint.height / 180);
+
+        createPoint(ctx, lat, lon);
+    });    
 }
+
 else {
     myTimer = (function (ctx) {
-        alert("start...");
-        $.post(getPoint).done(function (xml) {
-            parseXml(xml);
-            var isDone = document.getElementById("isDone").value;
-            alert(isDone);
 
+
+        $.post(getPoint).done(function (xml) {
+            parseXml(xml);          
+            if ($xml.find("done").text()) {
+                alert("done");
+                stopInterval();
+            }       
+            
             var isSaveNeeded = document.getElementById("isSaveNeeded").value;
             var lon = (parseFloat($xml.find("lon").text()) + 180) * (canvacePoint.width / 360);
             var lat = (parseFloat($xml.find("lat").text()) + 90) * (canvacePoint.height / 180);
@@ -119,16 +131,11 @@ else {
               
                 recordTime -= 0.25;
                 
-            }
-            
-            if (isDone == "true") {
-
-                alert("done");
-                stopInterval();
-            }     
+            }           
+                
         });
     });
-    var myVar = setInterval(function () { myTimer(ctx); }, 1000 / rate);
+    myVar = setInterval(function () { myTimer(ctx); }, 1000 / rate);
 
     function stopInterval() {
         clearInterval(myVar);

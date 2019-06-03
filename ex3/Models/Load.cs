@@ -11,7 +11,7 @@ namespace ex3.Models
     public class Load
     {
         bool m_isLoaded = false;
-        string m_isDone = "false";
+        bool m_isDone = false;
         List<string> m_data;
         string m_fileName;
 
@@ -26,7 +26,7 @@ namespace ex3.Models
             return instance;
         }
 
-        public string M_isDone
+        public bool M_isDone
         {
             get
             {
@@ -97,7 +97,7 @@ namespace ex3.Models
             }
             else
             {
-                this.M_isDone = "true";
+                this.M_isDone = true;
             }
         }
 
